@@ -1,5 +1,6 @@
 const getSongs = async(searchSong) => {
         const url = `https://api.lyrics.ovh/suggest/${searchSong}`;
+        toggleSpinner();
         try {
             const response = await fetch(url);
             const data = await response.json();
@@ -16,6 +17,7 @@ document.getElementById('search-button').addEventListener('click', function() {
 })
 
 const displaySongs = (song) => {
+
     const resultArea = document.getElementById('result-area');
     resultArea.innerHTML = '';
     for (i = 0; i < song.length; i++) {
@@ -35,6 +37,7 @@ const displaySongs = (song) => {
         </div>
         `
         resultArea.appendChild(songDiv);
+        toggleSpinner();
     }
 }
 const getLyric = async(artist, title) => {
@@ -49,6 +52,21 @@ const getLyric = async(artist, title) => {
     }
 }
 const displayLyrics = lyrics => {
-    const getLyric = document.getElementById('get-lyrics');
-    getLyric.innerText = lyrics;
-}
+        const getLyric = document.getElementById('get-lyrics');
+        getLyric.innerText = lyrics;
+    }
+    // setting uo spinner toggle
+const toggleSpinner = () => {
+        const spinner = document.getElementById('loading-spinner');
+        const songs = document.getElementById('result-area');
+        spinner.classList.toggle('d-none');
+        songs.classList.toggle('d-none');
+    }
+    // Enter key setting
+const searchBtn = document.getElementById('search-button');
+const searchField = document.getElementById('search-area');
+searchField.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        searchBtn.click();
+    }
+})
